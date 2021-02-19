@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Shipping.Integration
+namespace Common.Shipping.Integration
 {
     public class ApiResult
     {
@@ -23,6 +23,11 @@ namespace Shipping.Integration
         {
             Pass = true;
             PassInfo = passMessage;
+        }
+
+        public ApiResult ForceFail(string error)
+        {
+            throw new FormatException(error);
         }
     }
 }

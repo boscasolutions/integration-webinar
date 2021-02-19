@@ -1,5 +1,5 @@
 ﻿using NServiceBus.Logging;
-using Shipping.Integration;
+using Common.Shipping.Integration;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -24,7 +24,7 @@ namespace MapleTechnicalComponent
                     {
                         var passMessage = string.Format($"Succeeded in contacting {url}");
                         log.Info(passMessage);
-                        
+
                         apiResult.RequestPassed(passMessage);
                         return apiResult;
                     }
@@ -32,7 +32,9 @@ namespace MapleTechnicalComponent
                     var error = $"Failed to contact '{url}'. HttpStatusCode: {response.StatusCode}";
                     log.Info(error);
 
-                    apiResult.RequestFailed(error);
+                    // apiResult.RequestFailed(error);
+                    // this will throw
+                    apiResult.ForceFail(error);
 
                     return apiResult;
                 }
@@ -42,7 +44,7 @@ namespace MapleTechnicalComponent
                 var error = $"Failed to contact '{url}'. Error: {exception.Message}";
                 log.Info(error);
 
-                apiResult.RequestFailed(error);
+                apiResult.ForceFail(error);
 
                 return apiResult;
             }

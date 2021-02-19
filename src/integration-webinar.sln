@@ -16,11 +16,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlpineWebApi", "AlpineWebAp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapleWebApi", "MapleWebApi\MapleWebApi.csproj", "{A66FF5E3-84B7-4CA3-B0C1-029DD01EDF5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlpineTechnicalComponent", "AlpineTechnicalComponent\AlpineTechnicalComponent.csproj", "{F0D19035-9254-431D-A6CB-E93D2F9E8DF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlpineTechnicalComponent", "AlpineTechnicalComponent\AlpineTechnicalComponent.csproj", "{F0D19035-9254-431D-A6CB-E93D2F9E8DF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapleTechnicalComponent", "MapleTechnicalComponent\MapleTechnicalComponent.csproj", "{6EC11EFE-ADEE-4C0B-A40F-51CF77613E12}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapleTechnicalComponent", "MapleTechnicalComponent\MapleTechnicalComponent.csproj", "{6EC11EFE-ADEE-4C0B-A40F-51CF77613E12}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{AA023367-2011-4D7B-BCC2-CEF19A7CAFA4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{AA023367-2011-4D7B-BCC2-CEF19A7CAFA4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Platform", "Platform\Platform.csproj", "{D343EF40-C7C4-4EA7-8F08-C97F13FEAB8F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Configuration", "Common.Configuration\Common.Configuration.csproj", "{F438161D-E233-45ED-AC73-0C6069BCD480}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -68,6 +72,14 @@ Global
 		{AA023367-2011-4D7B-BCC2-CEF19A7CAFA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA023367-2011-4D7B-BCC2-CEF19A7CAFA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA023367-2011-4D7B-BCC2-CEF19A7CAFA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D343EF40-C7C4-4EA7-8F08-C97F13FEAB8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D343EF40-C7C4-4EA7-8F08-C97F13FEAB8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D343EF40-C7C4-4EA7-8F08-C97F13FEAB8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D343EF40-C7C4-4EA7-8F08-C97F13FEAB8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F438161D-E233-45ED-AC73-0C6069BCD480}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F438161D-E233-45ED-AC73-0C6069BCD480}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F438161D-E233-45ED-AC73-0C6069BCD480}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F438161D-E233-45ED-AC73-0C6069BCD480}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

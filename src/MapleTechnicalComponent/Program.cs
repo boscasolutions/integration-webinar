@@ -1,4 +1,5 @@
-﻿using NServiceBus;
+﻿using Common.Configuration;
+using NServiceBus;
 using System;
 using System.Threading.Tasks;
 
@@ -10,10 +11,8 @@ namespace MapleTechnicalComponent
         {
             Console.Title = "MapleTechnicalComponent";
 
-            var endpointConfiguration = new EndpointConfiguration("MapleTechnicalComponent");
-
-            var transport = endpointConfiguration.UseTransport<LearningTransport>();
-            var persistence = endpointConfiguration.UsePersistence<LearningPersistence>();
+            var endpointConfiguration = new EndpointConfiguration("MapleTechnicalComponent"); 
+            endpointConfiguration.ApplyEndpointConfiguration();
 
             var endpointInstance = await Endpoint.Start(endpointConfiguration)
                 .ConfigureAwait(false);

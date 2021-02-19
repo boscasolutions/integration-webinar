@@ -1,4 +1,5 @@
-﻿using NServiceBus;
+﻿using Common.Configuration;
+using NServiceBus;
 using System;
 using System.Threading.Tasks;
 
@@ -11,11 +12,9 @@ namespace AlpineTechnicalComponent
             Console.Title = "AlpineTechnicalComponent";
 
             var endpointConfiguration = new EndpointConfiguration("AlpineTechnicalComponent");
+            endpointConfiguration.ApplyEndpointConfiguration();
 
-            var transport = endpointConfiguration.UseTransport<LearningTransport>();
-            var persistence = endpointConfiguration.UsePersistence<LearningPersistence>();           
-
-            var endpointInstance = await Endpoint.Start(endpointConfiguration)
+           var endpointInstance = await Endpoint.Start(endpointConfiguration)
                 .ConfigureAwait(false);
 
             Console.WriteLine("Press Enter to exit.");

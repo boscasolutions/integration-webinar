@@ -1,10 +1,12 @@
 ﻿namespace Shipping
 {
+    using Messages.Commands;
+    using Messages.Events;
+    using Messages.Replys;
     using NServiceBus;
     using NServiceBus.Logging;
     using System;
     using System.Threading.Tasks;
-    using Messages;
 
     class ShipOrderWorkflow :
         Saga<ShipOrderWorkflow.ShipOrderData>,

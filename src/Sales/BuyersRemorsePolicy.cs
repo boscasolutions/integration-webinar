@@ -1,8 +1,9 @@
-﻿using NServiceBus;
+﻿using Messages.Commands;
+using Messages.Events;
+using NServiceBus;
 using NServiceBus.Logging;
 using System;
 using System.Threading.Tasks;
-using Messages;
 
 namespace Core_7.BuyersRemorseTimeoutRequest
 {
@@ -60,7 +61,7 @@ namespace Core_7.BuyersRemorseTimeoutRequest
     {
     }
 
-    public class BuyersRemorseState : 
+    public class BuyersRemorseState :
         ContainSagaData
     {
         public string CustomerId { get; set; }

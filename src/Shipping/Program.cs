@@ -1,4 +1,5 @@
-﻿using Messages;
+﻿using Common.Configuration;
+using Messages.Commands;
 using NServiceBus;
 using System;
 using System.Threading.Tasks;
@@ -12,15 +13,8 @@ namespace Shipping
             Console.Title = "Shipping";
 
             var endpointConfiguration = new EndpointConfiguration("Shipping");
-
-            var transport = endpointConfiguration.UseTransport<LearningTransport>();
-            var persistence = endpointConfiguration.UsePersistence<LearningPersistence>();
-
-            var routing = transport.Routing();
-            routing.RouteToEndpoint(typeof(ShipOrder), "Shipping");
-            routing.RouteToEndpoint(typeof(ShipWithMaple), "MapleTechnicalComponent");
-            routing.RouteToEndpoint(typeof(ShipWithAlpine), "AlpineTechnicalComponent");
-
+            endpointConfiguration.ApplyEndpointConfiguration(EndpointMappings.MessageEndpointMappings());
+            
             var endpointInstance = await Endpoint.Start(endpointConfiguration)
                 .ConfigureAwait(false);
 

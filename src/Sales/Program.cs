@@ -1,6 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using Common.Configuration;
 using NServiceBus;
+using System;
+using System.Threading.Tasks;
 
 namespace Sales
 {
@@ -11,10 +12,7 @@ namespace Sales
             Console.Title = "Sales";
 
             var endpointConfiguration = new EndpointConfiguration("Sales");
-
-            var transport = endpointConfiguration.UseTransport<LearningTransport>();
-
-            var persistence = endpointConfiguration.UsePersistence<LearningPersistence>();
+            endpointConfiguration.ApplyEndpointConfiguration();
 
             var endpointInstance = await Endpoint.Start(endpointConfiguration)
                 .ConfigureAwait(false);

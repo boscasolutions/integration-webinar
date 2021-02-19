@@ -1,11 +1,12 @@
-﻿using Messages;
+﻿using Messages.Events;
+using Messages.Commands;
 using NServiceBus;
 using NServiceBus.Logging;
 using System.Threading.Tasks;
 
 namespace Shipping
 {
-    class ShippingPolicy : 
+    class ShippingPolicy :
         Saga<ShippingPolicyData>,
         IAmStartedByMessages<OrderBilled>,
         IAmStartedByMessages<OrderPlaced>
@@ -44,7 +45,7 @@ namespace Shipping
         }
     }
 
-    class ShippingPolicyData : 
+    class ShippingPolicyData :
         ContainSagaData
     {
         public string OrderId { get; set; }

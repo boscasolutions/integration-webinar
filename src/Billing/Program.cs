@@ -1,6 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using Common.Configuration;
 using NServiceBus;
+using System;
+using System.Threading.Tasks;
 
 namespace Billing
 {
@@ -11,9 +12,7 @@ namespace Billing
             Console.Title = "Billing";
 
             var endpointConfiguration = new EndpointConfiguration("Billing");
-
-            var transport = endpointConfiguration.UseTransport<LearningTransport>();
-            var persistence = endpointConfiguration.UsePersistence<LearningPersistence>();
+            endpointConfiguration.ApplyEndpointConfiguration();
 
             endpointConfiguration.RegisterComponents(
                 c =>

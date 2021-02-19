@@ -56,8 +56,10 @@ class ProgramMapleWebApi
         {
             return;
         }
+
         var context = listener.EndGetContext(result);
         var response = context.Response;
+
         if (isReturningOk)
         {
             WriteResponse(response, HttpStatusCode.OK);
@@ -66,7 +68,9 @@ class ProgramMapleWebApi
         {
             WriteResponse(response, HttpStatusCode.InternalServerError);
         }
+
         response.Close();
+
         listener.BeginGetContext(ListenerCallback, listener);
     }
 

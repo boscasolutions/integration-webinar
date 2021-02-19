@@ -1,5 +1,5 @@
 ﻿using NServiceBus.Logging;
-using Shipping.Integration;
+using Common.Shipping.Integration;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -25,7 +25,7 @@ namespace AlpineTechnicalComponent
                     {
                         var passMessage = string.Format($"Succeeded in contacting {url}");
                         log.Info(passMessage);
-                        
+
                         apiResult.RequestPassed(passMessage);
 
                         return apiResult;

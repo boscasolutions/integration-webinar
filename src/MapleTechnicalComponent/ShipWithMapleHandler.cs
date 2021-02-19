@@ -1,9 +1,10 @@
-﻿using NServiceBus;
+﻿using Messages.Commands;
+using Messages.Replys;
+using NServiceBus;
 using NServiceBus.Logging;
-using Messages;
+using Common.Shipping.Integration;
 using System;
 using System.Threading.Tasks;
-using Shipping.Integration;
 
 namespace MapleTechnicalComponent
 {

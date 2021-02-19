@@ -1,9 +1,10 @@
-﻿using NServiceBus;
+﻿using Messages.Commands;
+using Messages.Replys;
+using NServiceBus;
 using NServiceBus.Logging;
-using Messages;
+using Common.Shipping.Integration;
 using System;
 using System.Threading.Tasks;
-using Shipping.Integration;
 
 namespace AlpineTechnicalComponent
 {
@@ -27,7 +28,7 @@ namespace AlpineTechnicalComponent
 
             ApiResult result = await apiClient.CallApi().ConfigureAwait(false);
 
-            if(result.Pass)
+            if (result.Pass)
                 await context.Reply(new ShipmentAcceptedByAlpine());
             if (result.Failed)
                 await context.Reply(new ShipmentWithAlpineFailed());

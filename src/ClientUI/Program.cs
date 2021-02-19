@@ -1,8 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-using Messages;
+﻿using Common.Configuration;
+using Messages.Commands;
 using NServiceBus;
 using NServiceBus.Logging;
+using System;
+using System.Threading.Tasks;
 
 namespace ClientUI
 {
@@ -13,12 +14,7 @@ namespace ClientUI
             Console.Title = "ClientUI";
 
             var endpointConfiguration = new EndpointConfiguration("ClientUI");
-
-            var transport = endpointConfiguration.UseTransport<LearningTransport>();
-
-            var routing = transport.Routing();
-            routing.RouteToEndpoint(typeof(PlaceOrder), "Sales");
-            routing.RouteToEndpoint(typeof(CancelOrder), "Sales");
+            endpointConfiguration.ApplyEndpointConfiguration(EndpointMappings.MessageEndpointMappings());
 
             var endpointInstance = await Endpoint.Start(endpointConfiguration)
                 .ConfigureAwait(false);
@@ -35,8 +31,8 @@ namespace ClientUI
         static async Task RunLoop(IEndpointInstance endpointInstance)
         {
             var lastOrder = string.Empty;
-			var customerID = "Particular";
-			
+            var customerID = "Particular";
+
             while (true)
             {
                 log.Info("Press 'P' to place an order, 'C' to cancel last order, or 'Q' to quit.");
@@ -49,7 +45,7 @@ namespace ClientUI
                         // Instantiate the command
                         var command = new PlaceOrder
                         {
-                                CustomerId = customerID,
+                            CustomerId = customerID,
                             OrderId = Guid.NewGuid().ToString()
                         };
 
