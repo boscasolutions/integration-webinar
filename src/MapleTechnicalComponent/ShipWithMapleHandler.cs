@@ -27,10 +27,15 @@ namespace MapleTechnicalComponent
 
             ApiResult result = await apiClient.CallApi().ConfigureAwait(false);
 
-            if (result.Pass)
-                await context.Reply(new ShipmentAcceptedByMaple());
+            // TODO: expand on that
+            if (result.Sucsess)
+                await context.Reply(new MapleApiSucsess() { ResultMessage = result.SuccessMessage, TrackingNumber = result.TrackingNumber});
             if (result.Failed)
-                await context.Reply(new ShipmentWithMapleFailed());
+                await context.Reply(new MapleApiFailureUnknown() { ResultMessage = result.ErrorMessage});
+            if(result.Redirect)
+                await context.Reply(new MapleApiFailureRejection() { ResultMessage = result.ErrorMessage });
+            if (result.Redirect)
+                await context.Reply(new MapleApiFailureRedirect() { ResultMessage = result.ErrorMessage });
         }
     }
 

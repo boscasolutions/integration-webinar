@@ -13,7 +13,7 @@ namespace Shipping
                 var routing = transport.Routing();
                 routing.RouteToEndpoint(typeof(ShipOrder), "Shipping");
                 routing.RouteToEndpoint(typeof(ShipWithMaple), "MapleTechnicalComponent");
-                routing.RouteToEndpoint(typeof(ShipWithAlpine), "AlpineTechnicalComponent");
+                routing.RouteToEndpoint(typeof(ShipWithAlpineIntegration), "AlpineTechnicalComponent");
             };
         }
     }

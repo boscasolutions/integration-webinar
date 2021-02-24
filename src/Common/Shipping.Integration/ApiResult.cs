@@ -4,25 +4,27 @@ namespace Common.Shipping.Integration
 {
     public class ApiResult
     {
-        public string Error { get; private set; }
+        public string ErrorMessage { get; private set; }
 
-        public string PassInfo { get; private set; }
-
-        public bool Pass { get; private set; }
+        public string SuccessMessage { get; private set; }
+        public string TrackingNumber { get; private set; }
+        public bool Sucsess { get; private set; }
 
         public bool Failed { get; private set; }
+        public bool Redirect { get; set; }
 
-        public ApiResult RequestFailed(string error)
+        public ApiResult RequestFailed(string errorMessage)
         {
-            Error = error;
+            ErrorMessage = errorMessage;
             Failed = true;
             return this;
         }
 
-        public void RequestPassed(string passMessage)
+        public void RequestPassed(string successMessage, string trackingNumber)
         {
-            Pass = true;
-            PassInfo = passMessage;
+            Sucsess = true;
+            SuccessMessage = successMessage;
+            TrackingNumber = trackingNumber;
         }
 
         public ApiResult ForceFail(string error)

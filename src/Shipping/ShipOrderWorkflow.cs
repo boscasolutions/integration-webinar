@@ -11,10 +11,10 @@
     class ShipOrderWorkflow :
         Saga<ShipOrderWorkflow.ShipOrderData>,
         IAmStartedByMessages<ShipOrder>,
-        IHandleMessages<ShipmentAcceptedByMaple>,
-        IHandleMessages<ShipmentAcceptedByAlpine>,
-        IHandleMessages<ShipmentWithMapleFailed>,
-        IHandleMessages<ShipmentWithAlpineFailed>,
+        IHandleMessages<MapleShipmentAccepted>,
+        IHandleMessages<AlpineShipmentAccepted>,
+        IHandleMessages<MapleShipmentFailed>,
+        IHandleMessages<AlpineShipmentFailed>,
         IHandleTimeouts<ShipOrderWorkflow.ShippingEscalation>
     {
         static ILog log = LogManager.GetLogger<ShipOrderWorkflow>();
@@ -35,7 +35,7 @@
             await RequestTimeout(context, TimeSpan.FromSeconds(20), new ShippingEscalation());
         }
 
-        public Task Handle(ShipmentAcceptedByMaple message, IMessageHandlerContext context)
+        public Task Handle(MapleShipmentAccepted message, IMessageHandlerContext context)
         {
             if (!Data.ShipmentOrderSentToAlpine)
             {
@@ -49,7 +49,7 @@
             return Task.CompletedTask;
         }
 
-        public Task Handle(ShipmentAcceptedByAlpine message, IMessageHandlerContext context)
+        public Task Handle(AlpineShipmentAccepted message, IMessageHandlerContext context)
         {
             log.Info($"Order [{Data.OrderId}] - Successfully shipped with Alpine");
 
@@ -83,7 +83,7 @@
             }
         }
 
-        public Task Handle(ShipmentWithMapleFailed message, IMessageHandlerContext context)
+        public Task Handle(MapleShipmentFailed message, IMessageHandlerContext context)
         {
             // placeholder
             log.Info($"Order [{Data.OrderId}] - Shipment With Maple Failed.");
@@ -91,7 +91,7 @@
             return Task.CompletedTask;
         }
 
-        public Task Handle(ShipmentWithAlpineFailed message, IMessageHandlerContext context)
+        public Task Handle(AlpineShipmentFailed message, IMessageHandlerContext context)
         {
             // placeholder
             log.Info($"Order [{Data.OrderId}] - Shipment With Alpine Failed.");

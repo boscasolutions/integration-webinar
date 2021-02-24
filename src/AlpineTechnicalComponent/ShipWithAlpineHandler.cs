@@ -11,14 +11,14 @@ namespace AlpineTechnicalComponent
     #region ShipWithAlpineHandler
     // Alpine is the cheep not so relible service
 
-    class ShipWithAlpineHandler : IHandleMessages<ShipWithAlpine>
+    class ShipWithAlpineHandler : IHandleMessages<ShipWithAlpineIntegration>
     {
         static ILog log = LogManager.GetLogger<ShipWithAlpineHandler>();
 
         const int MaximumTimeAlpineMightRespond = 30;
         static Random random = new Random();
 
-        public async Task Handle(ShipWithAlpine message, IMessageHandlerContext context)
+        public async Task Handle(ShipWithAlpineIntegration message, IMessageHandlerContext context)
         {
             var waitingTime = random.Next(MaximumTimeAlpineMightRespond);
 
@@ -28,11 +28,15 @@ namespace AlpineTechnicalComponent
 
             ApiResult result = await apiClient.CallApi().ConfigureAwait(false);
 
-            if (result.Pass)
-                await context.Reply(new ShipmentAcceptedByAlpine());
+            // TODO: expand on that
+            if (result.Sucsess)
+                await context.Reply(new AlpineApiSucsess());
             if (result.Failed)
-                await context.Reply(new ShipmentWithAlpineFailed());
-
+                await context.Reply(new AlpineApiFailureUnknown());
+            if (result.Redirect)
+                await context.Reply(new AlpineApiFailureRejection());
+            if (result.Redirect)
+                await context.Reply(new AlpineApiFailureRedirect());
         }
     }
 
