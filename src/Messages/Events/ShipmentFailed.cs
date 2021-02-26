@@ -2,5 +2,6 @@
 {
     public class ShipmentFailed
     {
+        public string OrderId { get; set; }
     }
 }

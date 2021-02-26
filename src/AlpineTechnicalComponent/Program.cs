@@ -12,7 +12,7 @@ namespace AlpineTechnicalComponent
             Console.Title = "AlpineTechnicalComponent";
 
             var endpointConfiguration = new EndpointConfiguration("AlpineTechnicalComponent");
-            endpointConfiguration.ApplyEndpointConfiguration();
+            endpointConfiguration.ApplyEndpointConfiguration(EndpointMappings.MessageEndpointMappings());
 
            var endpointInstance = await Endpoint.Start(endpointConfiguration)
                 .ConfigureAwait(false);

@@ -22,6 +22,10 @@
         protected override void ConfigureHowToFindSaga(SagaPropertyMapper<ShipOrderData> mapper)
         {
             mapper.ConfigureMapping<ShipOrder>(message => message.OrderId).ToSaga(saga => saga.OrderId);
+            mapper.ConfigureMapping<MapleShipmentAccepted>(message => message.OrderId).ToSaga(saga => saga.OrderId);
+            mapper.ConfigureMapping<AlpineShipmentAccepted>(message => message.OrderId).ToSaga(saga => saga.OrderId);
+            mapper.ConfigureMapping<MapleShipmentFailed>(message => message.OrderId).ToSaga(saga => saga.OrderId);
+            mapper.ConfigureMapping<AlpineShipmentFailed>(message => message.OrderId).ToSaga(saga => saga.OrderId);
         }
 
         public async Task Handle(ShipOrder message, IMessageHandlerContext context)
@@ -31,7 +35,7 @@
             // Execute order to ship with Maple
             await context.Send(new ShipWithMaple() { OrderId = Data.OrderId });
 
-            // Add timeout to escalate if Maple did not ship in time.
+            // Add timeout to escalate if Maple did not ship on time.
             await RequestTimeout(context, TimeSpan.FromSeconds(20), new ShippingEscalation());
         }
 
@@ -39,7 +43,7 @@
         {
             if (!Data.ShipmentOrderSentToAlpine)
             {
-                log.Info($"Order [{Data.OrderId}] - Successfully shipped with Maple");
+                log.Info($"Order [{Data.OrderId}] - Successfully shipped with Maple with TrackingNumber: [{message.TrackingNumber}]");
 
                 Data.ShipmentAcceptedByMaple = true;
 
@@ -51,7 +55,7 @@
 
         public Task Handle(AlpineShipmentAccepted message, IMessageHandlerContext context)
         {
-            log.Info($"Order [{Data.OrderId}] - Successfully shipped with Alpine");
+            log.Info($"Order [{Data.OrderId}] - Successfully shipped with Alpine with TrackingNumber: [{message.TrackingNumber}]");
 
             Data.ShipmentAcceptedByAlpine = true;
 

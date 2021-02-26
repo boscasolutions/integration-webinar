@@ -11,12 +11,15 @@ namespace Common.Shipping.Integration
         public bool Sucsess { get; private set; }
 
         public bool Failed { get; private set; }
+        public string StatusCode { get; private set; }
         public bool Redirect { get; set; }
+        public bool Rejected { get; set; }
 
-        public ApiResult RequestFailed(string errorMessage)
+        public ApiResult RequestFailed(string errorMessage, string statusCode)
         {
             ErrorMessage = errorMessage;
             Failed = true;
+            StatusCode = statusCode;
             return this;
         }
 

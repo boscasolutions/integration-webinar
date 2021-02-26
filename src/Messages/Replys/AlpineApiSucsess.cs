@@ -6,5 +6,6 @@
         public string ResultMessage { get; set; }
 
         public string TrackingNumber { get; set; }
+        public string OrderId { get; set; }
     }
 }

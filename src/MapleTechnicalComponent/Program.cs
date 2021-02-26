@@ -12,7 +12,7 @@ namespace MapleTechnicalComponent
             Console.Title = "MapleTechnicalComponent";
 
             var endpointConfiguration = new EndpointConfiguration("MapleTechnicalComponent"); 
-            endpointConfiguration.ApplyEndpointConfiguration();
+            endpointConfiguration.ApplyEndpointConfiguration(EndpointMappings.MessageEndpointMappings());
 
             var endpointInstance = await Endpoint.Start(endpointConfiguration)
                 .ConfigureAwait(false);

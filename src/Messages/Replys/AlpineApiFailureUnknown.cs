@@ -4,5 +4,6 @@
     {
         // 500 spectrum, server error, timeout
         public string ResultMessage { get; set; }
+        public string OrderId { get; set; }
     }
 }

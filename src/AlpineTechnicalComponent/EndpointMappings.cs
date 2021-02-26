@@ -2,7 +2,7 @@
 using NServiceBus;
 using System;
 
-namespace Shipping
+namespace AlpineTechnicalComponent
 {
     public class EndpointMappings
     {
@@ -11,9 +11,7 @@ namespace Shipping
             return transport =>
             {
                 var routing = transport.Routing();
-                routing.RouteToEndpoint(typeof(ShipOrder), "Shipping");
-                routing.RouteToEndpoint(typeof(ShipWithMaple), "MapleTechnicalComponent");
-                routing.RouteToEndpoint(typeof(ShipWithAlpine), "AlpineTechnicalComponent");
+                routing.RouteToEndpoint(typeof(ShipWithAlpineIntegration), "AlpineTechnicalComponent");
             };
         }
     }

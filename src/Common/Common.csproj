@@ -4,4 +4,9 @@
     <TargetFrameworks>netcoreapp3.1;netcoreapp2.1;net48</TargetFrameworks>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="NServiceBus" Version="7.4.4" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+  </ItemGroup>
+
 </Project>
