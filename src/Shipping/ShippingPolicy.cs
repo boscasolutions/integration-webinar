@@ -8,7 +8,6 @@ namespace Shipping
 {
     class ShippingPolicy :
         Saga<ShippingPolicyData>,
-        IAmStartedByMessages<OrderBilled>,
         IAmStartedByMessages<OrderPlaced>
     {
         static ILog log = LogManager.GetLogger<ShippingPolicy>();
@@ -17,20 +16,13 @@ namespace Shipping
         {
             mapper.ConfigureMapping<OrderPlaced>(message => message.OrderId)
                 .ToSaga(sagaData => sagaData.OrderId);
-            mapper.ConfigureMapping<OrderBilled>(message => message.OrderId)
-                .ToSaga(sagaData => sagaData.OrderId);
         }
 
         public Task Handle(OrderPlaced message, IMessageHandlerContext context)
         {
             log.Info($"OrderPlaced message received.");
             Data.IsOrderPlaced = true;
-            return ProcessOrder(context);
-        }
-
-        public Task Handle(OrderBilled message, IMessageHandlerContext context)
-        {
-            log.Info($"OrderBilled message received.");
+            // Cheating :-)
             Data.IsOrderBilled = true;
             return ProcessOrder(context);
         }

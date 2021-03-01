@@ -1,5 +1,5 @@
 ﻿using Common.Configuration;
-using Messages.Commands;
+using Messages.Events;
 using NServiceBus;
 using NServiceBus.Logging;
 using System;
@@ -14,7 +14,7 @@ namespace ClientUI
             Console.Title = "ClientUI";
 
             var endpointConfiguration = new EndpointConfiguration("ClientUI");
-            endpointConfiguration.ApplyEndpointConfiguration(EndpointMappings.MessageEndpointMappings());
+            endpointConfiguration.ApplyEndpointConfiguration();
 
             var endpointInstance = await Endpoint.Start(endpointConfiguration)
                 .ConfigureAwait(false);
@@ -35,36 +35,26 @@ namespace ClientUI
 
             while (true)
             {
-                log.Info("Press 'P' to place an order, 'C' to cancel last order, or 'Q' to quit.");
+                log.Info("Press 'P' to place an order, or 'Q' to quit.");
                 var key = Console.ReadKey();
                 Console.WriteLine();
 
                 switch (key.Key)
                 {
                     case ConsoleKey.P:
-                        // Instantiate the command
-                        var command = new PlaceOrder
+                        // Instantiate the process
+                        var orderPlaced = new OrderPlaced
                         {
                             CustomerId = customerID,
                             OrderId = Guid.NewGuid().ToString()
                         };
 
                         // Send the command
-                        log.Info($"Sending PlaceOrder command, OrderId = {command.OrderId}");
-                        await endpointInstance.Send(command)
+                        log.Info($"Publishing OrderPlaced event, OrderId = {orderPlaced.OrderId}");
+                        await endpointInstance.Send(orderPlaced)
                             .ConfigureAwait(false);
 
-                        lastOrder = command.OrderId; // Store order identifier to cancel if needed.
-                        break;
-
-                    case ConsoleKey.C:
-                        var cancelCommand = new CancelOrder
-                        {
-                            OrderId = lastOrder
-                        };
-                        await endpointInstance.Send(cancelCommand)
-                            .ConfigureAwait(false);
-                        log.Info($"Sent a correlated message to {cancelCommand.OrderId}");
+                        lastOrder = orderPlaced.OrderId; // Store order identifier to cancel if needed.
                         break;
 
                     case ConsoleKey.Q:
