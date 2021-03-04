@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace AlpineTechnicalComponent
 {
     #region ShipWithAlpineHandler
-    // Alpine is the cheep not so relible service
+    // Alpine is the cheep not so reliable service
     class ShipWithAlpineIntegrationHandler : IHandleMessages<ShipWithAlpineIntegration>
     {
         static ILog log = LogManager.GetLogger<ShipWithAlpineIntegrationHandler>();

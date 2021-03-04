@@ -51,7 +51,7 @@ namespace ClientUI
 
                         // Send the command
                         log.Info($"Publishing OrderPlaced event, OrderId = {orderPlaced.OrderId}");
-                        await endpointInstance.Send(orderPlaced)
+                        await endpointInstance.Publish(orderPlaced)
                             .ConfigureAwait(false);
 
                         lastOrder = orderPlaced.OrderId; // Store order identifier to cancel if needed.

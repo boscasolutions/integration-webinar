@@ -53,7 +53,6 @@ class ProgramMapleWebApi
         Console.WriteLine("\r\nCurrently returning {0}", responseSet.ToString());
     }
 
-
     static void ListenerCallback(IAsyncResult result)
     {
         if (!listener.IsListening)

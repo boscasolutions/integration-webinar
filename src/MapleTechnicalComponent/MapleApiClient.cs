@@ -17,7 +17,7 @@ namespace MapleTechnicalComponent
             return result;
         }
 
-        internal async Task<ApiResult> GetOrderShippingStatus(object orderId)
+        internal async Task<ApiResult> GetOrderShippingStatus(string orderId)
         {
             string requestString = url + @"/?shiporderstatus=" + orderId;
 
