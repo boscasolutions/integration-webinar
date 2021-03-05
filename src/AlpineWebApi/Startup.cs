@@ -4,14 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
-using TestApi.Data.Services;
-using TestApi.Data.Services.Interfaces;
-using TestApi.Data.Repositories.Repositories.Interfaces;
-using TestApi.Data.Repositories;
-using TestApi.Data;
+using AlpineWebApi.Data.Services;
+using AlpineWebApi.Data.Services.Interfaces;
+using AlpineWebApi.Data.Repositories.Repositories.Interfaces;
+using AlpineWebApi.Data.Repositories;
+using AlpineWebApi.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace TestApi
+namespace AlpineWebApi
 {
     public class Startup
     {

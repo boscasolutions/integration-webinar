@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using TestApi.Models;
+using MapleWebApi.Models;
 
-namespace TestApi.Data.Repositories.Repositories.Interfaces
+namespace MapleWebApi.Data.Repositories.Repositories.Interfaces
 {
     public interface IOrderShippingRepository
     {

@@ -1,21 +1,27 @@
 ﻿using System;
+using Shipping.Integration.Contracts;
 
 namespace Common.Shipping.Integration
 {
-    public class ApiResult
+    public class OrderShippingResult
     {
         public string ErrorMessage { get; private set; }
 
         public string SuccessMessage { get; private set; }
-        public string TrackingNumber { get; private set; }
+
         public bool Sucsess { get; private set; }
 
         public bool Failed { get; private set; }
+        
         public string StatusCode { get; private set; }
+        
         public bool Redirect { get; set; }
+        
         public bool Rejected { get; set; }
 
-        public ApiResult RequestFailed(string errorMessage, string statusCode)
+        public OrderShipping OrderShipping { get; set; }
+
+        public OrderShippingResult RequestFailed(string errorMessage, string statusCode)
         {
             ErrorMessage = errorMessage;
             Failed = true;
@@ -23,14 +29,13 @@ namespace Common.Shipping.Integration
             return this;
         }
 
-        public void RequestPassed(string successMessage, string trackingNumber)
+        public void RequestPassed(string successMessage)
         {
             Sucsess = true;
             SuccessMessage = successMessage;
-            TrackingNumber = trackingNumber;
         }
 
-        public ApiResult ForceFail(string error)
+        public OrderShippingResult ForceFail(string error)
         {
             throw new FormatException(error);
         }

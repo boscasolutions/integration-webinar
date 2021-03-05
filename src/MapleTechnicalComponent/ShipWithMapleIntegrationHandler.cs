@@ -19,11 +19,11 @@ namespace MapleTechnicalComponent
 
             var apiClient = new MapleApiClient();
 
-            ApiResult result = await apiClient.PlaceShippingForOrder(message.OrderId).ConfigureAwait(false);
+            OrderShippingResult result = await apiClient.PlaceShippingForOrder(message.OrderId).ConfigureAwait(false);
 
             // TODO: expand on that
             if (result.Sucsess)
-                await context.Reply(new MapleApiSucsess() { OrderId = message.OrderId, ResultMessage = result.SuccessMessage, TrackingNumber = result.TrackingNumber});
+                await context.Reply(new MapleApiSucsess() { OrderId = message.OrderId, ResultMessage = result.SuccessMessage, TrackingNumber = result.OrderShipping.TrackingNumber});
             if (result.Failed)
                 await context.Reply(new MapleApiFailureUnknown() { OrderId = message.OrderId, ResultMessage = result.ErrorMessage});
             if(result.Rejected)

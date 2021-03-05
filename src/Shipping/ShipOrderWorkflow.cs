@@ -2,7 +2,6 @@
 {
     using Messages.Commands;
     using Messages.Events;
-    using Messages.Replys;
     using NServiceBus;
     using NServiceBus.Logging;
     using System;
@@ -14,8 +13,7 @@
         IHandleMessages<MapleShipmentAccepted>,
         IHandleMessages<AlpineShipmentAccepted>,
         IHandleMessages<MapleShipmentFailed>,
-        IHandleMessages<AlpineShipmentFailed>,
-        IHandleTimeouts<ShipOrderWorkflow.ShippingEscalation>
+        IHandleMessages<AlpineShipmentFailed>
     {
         static ILog log = LogManager.GetLogger<ShipOrderWorkflow>();
 
@@ -34,37 +32,45 @@
 
             // Execute order to ship with Maple
             await context.Send(new ShipWithMaple() { OrderId = Data.OrderId });
-
-            // Add timeout to escalate if Maple did not ship on time.
-            await RequestTimeout(context, TimeSpan.FromSeconds(20), new ShippingEscalation());
         }
 
-        public Task Handle(MapleShipmentAccepted message, IMessageHandlerContext context)
+        public async Task Handle(MapleShipmentAccepted message, IMessageHandlerContext context)
         {
             if (!Data.ShipmentOrderSentToAlpine)
             {
                 log.Info($"Order [{Data.OrderId}] - Successfully shipped with Maple with TrackingNumber: [{message.TrackingNumber}]");
 
                 Data.ShipmentAcceptedByMaple = true;
-
-                MarkAsComplete();
             }
-
-            return Task.CompletedTask;
+            await ShippingEscalation(context);
         }
 
-        public Task Handle(AlpineShipmentAccepted message, IMessageHandlerContext context)
+        public async Task Handle(AlpineShipmentAccepted message, IMessageHandlerContext context)
         {
             log.Info($"Order [{Data.OrderId}] - Successfully shipped with Alpine with TrackingNumber: [{message.TrackingNumber}]");
 
             Data.ShipmentAcceptedByAlpine = true;
 
-            MarkAsComplete();
-
-            return Task.CompletedTask;
+            await ShippingEscalation(context);
         }
 
-        public async Task Timeout(ShippingEscalation timeout, IMessageHandlerContext context)
+        public async Task Handle(MapleShipmentFailed message, IMessageHandlerContext context)
+        {
+            // placeholder
+            log.Info($"Order [{Data.OrderId}] - Shipment With Maple Failed.");
+
+            await ShippingEscalation(context);
+        }
+
+        public async Task Handle(AlpineShipmentFailed message, IMessageHandlerContext context)
+        {
+            // placeholder
+            log.Info($"Order [{Data.OrderId}] - Shipment With Alpine Failed.");
+
+            await ShippingEscalation(context);
+        }
+
+        public async Task ShippingEscalation(IMessageHandlerContext context)
         {
             if (!Data.ShipmentAcceptedByMaple)
             {
@@ -73,7 +79,6 @@
                     log.Info($"Order [{Data.OrderId}] - No answer from Maple, let's try Alpine.");
                     Data.ShipmentOrderSentToAlpine = true;
                     await context.Send(new ShipWithAlpine() { OrderId = Data.OrderId });
-                    await RequestTimeout(context, TimeSpan.FromSeconds(20), new ShippingEscalation());
                 }
                 else if (!Data.ShipmentAcceptedByAlpine) // No response from Maple nor Alpine
                 {
@@ -87,32 +92,12 @@
             }
         }
 
-        public Task Handle(MapleShipmentFailed message, IMessageHandlerContext context)
-        {
-            // placeholder
-            log.Info($"Order [{Data.OrderId}] - Shipment With Maple Failed.");
-
-            return Task.CompletedTask;
-        }
-
-        public Task Handle(AlpineShipmentFailed message, IMessageHandlerContext context)
-        {
-            // placeholder
-            log.Info($"Order [{Data.OrderId}] - Shipment With Alpine Failed.");
-
-            return Task.CompletedTask;
-        }
-
         internal class ShipOrderData : ContainSagaData
         {
             public string OrderId { get; set; }
             public bool ShipmentAcceptedByMaple { get; set; }
             public bool ShipmentOrderSentToAlpine { get; set; }
             public bool ShipmentAcceptedByAlpine { get; set; }
-        }
-
-        internal class ShippingEscalation
-        {
         }
     }
 }

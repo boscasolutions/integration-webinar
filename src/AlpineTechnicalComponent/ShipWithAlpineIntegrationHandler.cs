@@ -19,11 +19,11 @@ namespace AlpineTechnicalComponent
 
             var apiClient = new AlpineApiClient();
 
-            ApiResult result = await apiClient.PlaceShippingForOrder(message.OrderId).ConfigureAwait(false);
+            OrderShippingResult result = await apiClient.PlaceShippingForOrder(message.OrderId).ConfigureAwait(false);
 
             // TODO: expand on that
             if (result.Sucsess)
-                await context.Reply(new AlpineApiSucsess() { OrderId = message.OrderId, ResultMessage = result.SuccessMessage, TrackingNumber = result.TrackingNumber });
+                await context.Reply(new AlpineApiSucsess() { OrderId = message.OrderId, ResultMessage = result.SuccessMessage, TrackingNumber = result.OrderShipping.TrackingNumber });
             if (result.Failed)
                 await context.Reply(new AlpineApiFailureUnknown() { OrderId = message.OrderId, ResultMessage = result.ErrorMessage });
             if (result.Rejected)

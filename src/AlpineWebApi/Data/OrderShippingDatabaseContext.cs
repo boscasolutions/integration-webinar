@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TestApi.Models;
+using AlpineWebApi.Models;
 
-namespace TestApi.Data
+namespace AlpineWebApi.Data
 {
     public class OrderShippingDatabaseContext : DbContext
     {

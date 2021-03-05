@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using TestApi.Data.Services.Interfaces;
-using TestApi.Models;
+using AlpineWebApi.Data.Services.Interfaces;
+using AlpineWebApi.Models;
 
-namespace TestApi.Controllers
+namespace AlpineWebApi.Controllers
 {
     [ApiController]
     [Route("OrderShipping")]
@@ -17,10 +16,10 @@ namespace TestApi.Controllers
             _orderShippingService = orderShippingService;
         }
 
-        [HttpGet("{orderId}", Name = "GetByOrderById")]
+        [HttpPost("{orderId}", Name = "GetByOrderById")]
         public async Task<ActionResult> GetByOrderById(string orderId)
         {
-            var result = await _orderShippingService.GetById(orderId);
+            var result = await _orderShippingService.GetById(orderId).ConfigureAwait(false);
 
             return Ok(result);
         }
@@ -31,18 +30,11 @@ namespace TestApi.Controllers
             var tracking = Guid.NewGuid().ToString();
             model.TrackingNumber = tracking;
 
-            if (model.IsValid(out IEnumerable<string> errors))
-            {
-                var result = await _orderShippingService.Create(model);
+            var result = await _orderShippingService.Create(model).ConfigureAwait(false);
 
-                return CreatedAtAction(
-                    nameof(GetByOrderById),
-                    new { id = result.OrderId }, result);
-            }
-            else
-            {
-                return BadRequest(errors);
-            }
+            return CreatedAtAction(
+                nameof(GetByOrderById),
+                new { id = result.OrderId }, result);
         }
     }
 }

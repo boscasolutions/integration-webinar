@@ -2,10 +2,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using TestApi.Data.Repositories.Repositories.Interfaces;
-using TestApi.Models;
+using AlpineWebApi.Data.Repositories.Repositories.Interfaces;
+using AlpineWebApi.Models;
 
-namespace TestApi.Data.Repositories
+namespace AlpineWebApi.Data.Repositories
 {
     public class OrderShippingRepository : IOrderShippingRepository
     {

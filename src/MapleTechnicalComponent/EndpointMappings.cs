@@ -12,6 +12,7 @@ namespace MapleTechnicalComponent
             {
                 var routing = transport.Routing();
                 routing.RouteToEndpoint(typeof(ShipWithMapleIntegration), "MapleTechnicalComponent");
+                routing.RouteToEndpoint(typeof(GetOrderShippingStatuMaple), "MapleTechnicalComponent");
             };
         }
     }

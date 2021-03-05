@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Common.Shipping.Integration;
+using Shipping.Integration.Contracts;
 
 namespace MapleTechnicalComponent
 {
@@ -8,20 +9,18 @@ namespace MapleTechnicalComponent
     {
         const string url = "http://localhost:57811";
 
-        public async Task<ApiResult> PlaceShippingForOrder(string orderId)
+        public async Task<OrderShippingResult> PlaceShippingForOrder(string orderId)
         {
-            string requestString = url + @"/?shiporder=" + orderId;
+            var orderShipping = new OrderShipping() { OrderId = orderId, State = "Posted" };
 
-            ApiResult result = await new ApiClient(requestString).CallApi().ConfigureAwait(false);
+            OrderShippingResult result = await new ApiClient(url).PostShipOrder(orderShipping).ConfigureAwait(false);
 
             return result;
         }
 
-        internal async Task<ApiResult> GetOrderShippingStatus(string orderId)
+        internal async Task<OrderShippingResult> GetOrderShippingStatus(string orderId)
         {
-            string requestString = url + @"/?shiporderstatus=" + orderId;
-
-            ApiResult result = await new ApiClient(requestString).CallApi().ConfigureAwait(false);
+            OrderShippingResult result = await new ApiClient(url).GetShipOrder(orderId).ConfigureAwait(false);
 
             return result;
         }

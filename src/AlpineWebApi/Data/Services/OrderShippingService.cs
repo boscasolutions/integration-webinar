@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TestApi.Data.Repositories.Repositories.Interfaces;
-using TestApi.Data.Services.Interfaces;
-using TestApi.Models;
+using AlpineWebApi.Data.Repositories.Repositories.Interfaces;
+using AlpineWebApi.Data.Services.Interfaces;
+using AlpineWebApi.Models;
 
-namespace TestApi.Data.Services
+namespace AlpineWebApi.Data.Services
 {
     public class OrderShippingService : IOrderShippingService
     {
@@ -28,21 +29,12 @@ namespace TestApi.Data.Services
                 return null;
         }
 
-        public async Task<OrderShipping> Update(OrderShipping orderShipping)
-        {
-            orderShipping.LastUpdatedDateTimeUtc = DateTime.UtcNow;
-
-            var success = await _repository.Update(orderShipping);
-
-            if (success)
-                return orderShipping;
-            else
-                return null;
-        }
-
         public async Task<OrderShipping> GetById(string orderShippingId)
         {
-            var result = await _repository.GetById(orderShippingId);
+            OrderShipping result = await _repository.GetById(orderShippingId);
+            
+            if (result == null)
+                return new OrderShipping() { State = "Not Found" };
 
             return result;
         }
@@ -50,6 +42,16 @@ namespace TestApi.Data.Services
         public async Task<IOrderedQueryable<OrderShipping>> GetAll()
         {
             var result = await _repository.GetAll();
+
+            if (result == null)
+            {
+                List<OrderShipping> notFound = new List<OrderShipping>
+                {
+                    new OrderShipping() { State = "Not Found" }
+                };
+                
+                return notFound.AsQueryable().OrderBy(x => x.State);
+            }
 
             return result;
         }
