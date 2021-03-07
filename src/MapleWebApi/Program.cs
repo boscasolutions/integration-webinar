@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 
 namespace MapleWebApi
@@ -15,7 +14,7 @@ namespace MapleWebApi
                 .UseStartup<Startup>()
                 .UseUrls("http://localhost:57811/")
                 .Build()
-                .Run();
+                .Start();
 
             while (true)
             {

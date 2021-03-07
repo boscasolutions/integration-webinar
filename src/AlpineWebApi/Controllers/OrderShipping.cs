@@ -19,22 +19,35 @@ namespace AlpineWebApi.Controllers
         [HttpPost("{orderId}", Name = "GetByOrderById")]
         public async Task<ActionResult> GetByOrderById(string orderId)
         {
-            var result = await _orderShippingService.GetById(orderId).ConfigureAwait(false);
-
-            return Ok(result);
+            if (Program.responseSet == 200)
+            {
+                var result = await _orderShippingService.GetById(orderId).ConfigureAwait(false);
+                return Ok(result);
+            }
+            else
+            {
+                return new StatusCodeResult(Program.responseSet);
+            }
         }
 
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] OrderShipping model)
         {
-            var tracking = Guid.NewGuid().ToString();
-            model.TrackingNumber = tracking;
-
-            var result = await _orderShippingService.Create(model).ConfigureAwait(false);
-
-            return CreatedAtAction(
-                nameof(GetByOrderById),
-                new { id = result.OrderId }, result);
+            if (Program.responseSet == 200)
+            {
+                var tracking = Guid.NewGuid().ToString();
+                model.TrackingNumber = tracking;
+                
+                var result = await _orderShippingService.Create(model).ConfigureAwait(false);
+                
+                return CreatedAtAction(
+                    nameof(GetByOrderById),
+                    new { id = result.OrderId }, result);
+            }
+            else
+            {
+                return new StatusCodeResult(Program.responseSet);
+            }
         }
     }
 }

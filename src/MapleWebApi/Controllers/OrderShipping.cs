@@ -37,8 +37,9 @@ namespace MapleWebApi.Controllers
             {
                 var tracking = Guid.NewGuid().ToString();
                 model.TrackingNumber = tracking;
-
+                
                 var result = await _orderShippingService.Create(model).ConfigureAwait(false);
+                
                 return CreatedAtAction(
                     nameof(GetByOrderById),
                     new { id = result.OrderId }, result);
