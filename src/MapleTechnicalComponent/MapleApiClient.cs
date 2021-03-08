@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Common.Shipping.Integration;
 using Shipping.Integration.Contracts;
 
@@ -11,7 +10,7 @@ namespace MapleTechnicalComponent
 
         public async Task<OrderShippingResult> PlaceShippingForOrder(string orderId)
         {
-            var orderShipping = new OrderShipping() { OrderId = orderId, State = "Posted" };
+            OrderShipping orderShipping = new OrderShipping() { OrderId = orderId, State = "Posted" };
 
             OrderShippingResult result = await new ApiClient(url).PostShipOrder(orderShipping).ConfigureAwait(false);
 

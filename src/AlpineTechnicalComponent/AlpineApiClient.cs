@@ -10,7 +10,7 @@ namespace AlpineTechnicalComponent
 
         public async Task<OrderShippingResult> PlaceShippingForOrder(string orderId)
         {
-            var orderShipping = new OrderShipping() { OrderId = orderId, State = "Posted" };
+            OrderShipping orderShipping = new OrderShipping() { OrderId = orderId, State = "Posted" };
 
             OrderShippingResult result = await new ApiClient(url).PostShipOrder(orderShipping).ConfigureAwait(false);
 

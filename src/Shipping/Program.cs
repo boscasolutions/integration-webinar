@@ -1,8 +1,7 @@
-﻿using Common.Configuration;
-using Messages.Commands;
-using NServiceBus;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using Common.Configuration;
+using NServiceBus;
 
 namespace Shipping
 {
@@ -12,10 +11,10 @@ namespace Shipping
         {
             Console.Title = "Shipping";
 
-            var endpointConfiguration = new EndpointConfiguration("Shipping");
+            EndpointConfiguration endpointConfiguration = new EndpointConfiguration("Shipping");
             endpointConfiguration.ApplyEndpointConfiguration(EndpointMappings.MessageEndpointMappings());
-            
-            var endpointInstance = await Endpoint.Start(endpointConfiguration)
+
+            IEndpointInstance endpointInstance = await Endpoint.Start(endpointConfiguration)
                 .ConfigureAwait(false);
 
             Console.WriteLine("Press Enter to exit.");

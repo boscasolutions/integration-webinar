@@ -1,6 +1,6 @@
-﻿using Messages.Commands;
+﻿using System;
+using Messages.Commands;
 using NServiceBus;
-using System;
 
 namespace AlpineTechnicalComponent
 {
@@ -10,7 +10,7 @@ namespace AlpineTechnicalComponent
         {
             return transport =>
             {
-                var routing = transport.Routing();
+                RoutingSettings<LearningTransport> routing = transport.Routing();
                 routing.RouteToEndpoint(typeof(ShipWithAlpineIntegration), "AlpineTechnicalComponent");
             };
         }

@@ -1,6 +1,6 @@
-﻿using Messages.Commands;
+﻿using System;
+using Messages.Commands;
 using NServiceBus;
-using System;
 
 namespace Shipping
 {
@@ -10,7 +10,7 @@ namespace Shipping
         {
             return transport =>
             {
-                var routing = transport.Routing();
+                RoutingSettings<LearningTransport> routing = transport.Routing();
                 routing.RouteToEndpoint(typeof(ShipOrder), "Shipping");
                 routing.RouteToEndpoint(typeof(ShipWithMaple), "MapleTechnicalComponent");
                 routing.RouteToEndpoint(typeof(ShipWithAlpine), "AlpineTechnicalComponent");

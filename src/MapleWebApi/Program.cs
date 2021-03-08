@@ -6,7 +6,7 @@ namespace MapleWebApi
 {
     class Program
     {
-        static internal int responseSet = 200;
+        internal static int responseSet = 200;
 
         static void Main(string[] args)
         {
@@ -20,23 +20,31 @@ namespace MapleWebApi
             {
                 ReportStatus();
 
-                var key = Console.ReadKey();
+                ConsoleKeyInfo key = Console.ReadKey();
                 Console.WriteLine();
 
                 if (key.Key == ConsoleKey.D2)
+                {
                     responseSet = 200;
+                }
 
                 if (key.Key == ConsoleKey.D3)
+                {
                     responseSet = 300;
+                }
 
                 if (key.Key == ConsoleKey.D4)
+                {
                     responseSet = 400;
+                }
 
                 if (key.Key == ConsoleKey.D5)
+                {
                     responseSet = 500;
+                }
             }
         }
-        
+
         static void ReportStatus()
         {
             Console.WriteLine("\r\nCurrently returning {0}", responseSet.ToString());

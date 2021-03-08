@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using AlpineWebApi.Models;
+﻿using AlpineWebApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AlpineWebApi.Data
 {
@@ -8,9 +8,9 @@ namespace AlpineWebApi.Data
         public OrderShippingDatabaseContext(
             DbContextOptions<OrderShippingDatabaseContext> dbContextOptions)
             : base(dbContextOptions) { }
-        
+
         public DbSet<OrderShipping> OrderShippings { get; set; }
-        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<OrderShipping>()

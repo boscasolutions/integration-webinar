@@ -1,7 +1,7 @@
-﻿using Common.Configuration;
-using NServiceBus;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using Common.Configuration;
+using NServiceBus;
 
 namespace AlpineTechnicalComponent
 {
@@ -11,10 +11,10 @@ namespace AlpineTechnicalComponent
         {
             Console.Title = "AlpineTechnicalComponent";
 
-            var endpointConfiguration = new EndpointConfiguration("AlpineTechnicalComponent");
+            EndpointConfiguration endpointConfiguration = new EndpointConfiguration("AlpineTechnicalComponent");
             endpointConfiguration.ApplyEndpointConfiguration(EndpointMappings.MessageEndpointMappings());
 
-           var endpointInstance = await Endpoint.Start(endpointConfiguration)
+            IEndpointInstance endpointInstance = await Endpoint.Start(endpointConfiguration)
                 .ConfigureAwait(false);
 
             Console.WriteLine("Press Enter to exit.");

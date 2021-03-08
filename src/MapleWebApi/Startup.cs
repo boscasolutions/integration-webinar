@@ -1,15 +1,15 @@
+using MapleWebApi.Data;
+using MapleWebApi.Data.Repositories;
+using MapleWebApi.Data.Repositories.Repositories.Interfaces;
+using MapleWebApi.Data.Services;
+using MapleWebApi.Data.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Configuration;
-using MapleWebApi.Data.Services;
-using MapleWebApi.Data.Services.Interfaces;
-using MapleWebApi.Data.Repositories.Repositories.Interfaces;
-using MapleWebApi.Data.Repositories;
-using MapleWebApi.Data;
-using Microsoft.EntityFrameworkCore;
 
 namespace MapleWebApi
 {
@@ -59,7 +59,7 @@ namespace MapleWebApi
 
         private static void ConfigureEntityFramework(IServiceCollection services)
         {
-            var databaseName = "OrderShippingDb";
+            string databaseName = "OrderShippingDb";
 
             services.AddDbContext<OrderShippingDatabaseContext>(options =>
                 options.UseInMemoryDatabase(databaseName));

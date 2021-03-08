@@ -21,27 +21,33 @@ namespace AlpineWebApi.Data.Services
         {
             orderShipping.LastUpdatedDateTimeUtc = DateTime.UtcNow;
 
-            var success = await _repository.Create(orderShipping);
+            bool success = await _repository.Create(orderShipping);
 
             if (success)
+            {
                 return orderShipping;
+            }
             else
+            {
                 return null;
+            }
         }
 
         public async Task<OrderShipping> GetById(string orderShippingId)
         {
             OrderShipping result = await _repository.GetById(orderShippingId);
-            
+
             if (result == null)
+            {
                 return new OrderShipping() { State = "Not Found" };
+            }
 
             return result;
         }
 
         public async Task<IOrderedQueryable<OrderShipping>> GetAll()
         {
-            var result = await _repository.GetAll();
+            IOrderedQueryable<OrderShipping> result = await _repository.GetAll();
 
             if (result == null)
             {
@@ -49,7 +55,7 @@ namespace AlpineWebApi.Data.Services
                 {
                     new OrderShipping() { State = "Not Found" }
                 };
-                
+
                 return notFound.AsQueryable().OrderBy(x => x.State);
             }
 
@@ -58,7 +64,7 @@ namespace AlpineWebApi.Data.Services
 
         public async Task<bool> Delete(string orderShippingId)
         {
-            var success = await _repository.Delete(orderShippingId);
+            bool success = await _repository.Delete(orderShippingId);
 
             return success;
         }

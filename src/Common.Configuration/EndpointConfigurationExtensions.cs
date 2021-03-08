@@ -1,5 +1,5 @@
-﻿using NServiceBus;
-using System;
+﻿using System;
+using NServiceBus;
 
 namespace Common.Configuration
 {
@@ -13,13 +13,13 @@ namespace Common.Configuration
                 .DefiningEventsAs(t => t.Namespace != null && t.Namespace.EndsWith("Events"))
                 .DefiningMessagesAs(t => t.Namespace != null && t.Namespace.EndsWith("Replys"));
 
-            var transport = endpointConfiguration.UseTransport<LearningTransport>();
-            var persistence = endpointConfiguration.UsePersistence<LearningPersistence>();
+            TransportExtensions<LearningTransport> transport = endpointConfiguration.UseTransport<LearningTransport>();
+            PersistenceExtensions<LearningPersistence> persistence = endpointConfiguration.UsePersistence<LearningPersistence>();
 
             endpointConfiguration.AuditProcessedMessagesTo("audit");
             endpointConfiguration.SendFailedMessagesTo("error");
 
-            var metrics = endpointConfiguration.EnableMetrics();
+            MetricsOptions metrics = endpointConfiguration.EnableMetrics();
             metrics.SendMetricDataToServiceControl(
                 serviceControlMetricsAddress: "Particular.Monitoring",
                 interval: TimeSpan.FromSeconds(2));
@@ -28,6 +28,9 @@ namespace Common.Configuration
                 serviceControlQueue: "Particular.ServiceControl",
                 frequency: TimeSpan.FromSeconds(15),
                 timeToLive: TimeSpan.FromSeconds(30));
+
+            endpointConfiguration.AuditSagaStateChanges(
+                serviceControlQueue: "audit");
 
             messageEndpointMappings?.Invoke(transport);
         }

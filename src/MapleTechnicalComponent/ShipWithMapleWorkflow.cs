@@ -1,9 +1,9 @@
-﻿using Messages.Commands;
+﻿using System.Threading.Tasks;
+using Messages.Commands;
 using Messages.Events;
 using Messages.Replys;
 using NServiceBus;
 using NServiceBus.Logging;
-using System.Threading.Tasks;
 
 namespace MapleTechnicalComponent
 {
@@ -13,14 +13,14 @@ namespace MapleTechnicalComponent
     // Retries: we need to make sure we don't ship the order twice, if there is a failure 
     // we need to first query the service and see if the order was already accepted
     // we can limit this to the 500 range (timeout, exception)
-    class ShipWithMapleWorkflow : Saga<ShipWithMapleWorkflowData>, 
+    class ShipWithMapleWorkflow : Saga<ShipWithMapleWorkflowData>,
         IAmStartedByMessages<ShipWithMaple>,
         IHandleMessages<MapleApiSucsess>,
         IHandleMessages<MapleApiFailureUnknown>,
         IHandleMessages<MapleApiFailureRejection>,
         IHandleMessages<MapleApiFailureRedirect>
-        {
-        static ILog log = LogManager.GetLogger<ShipWithMapleWorkflow>();
+    {
+        static readonly ILog log = LogManager.GetLogger<ShipWithMapleWorkflow>();
 
         protected override void ConfigureHowToFindSaga(SagaPropertyMapper<ShipWithMapleWorkflowData> mapper)
         {
@@ -48,7 +48,7 @@ namespace MapleTechnicalComponent
             {
                 Data.RetryCount++;
                 // check if order was excepted
-                await context.Send(new GetOrderShippingStatuMaple() { OrderId = message.OrderId});
+                await context.Send(new GetOrderShippingStatuMaple() { OrderId = message.OrderId });
             }
             else
             {
@@ -60,14 +60,14 @@ namespace MapleTechnicalComponent
         {
             log.Info($"ShipWithMapleWorkflow: MapleApiSucsess [OrderId: {message.OrderId}, TrackingId: {message.TrackingNumber}]");
 
-            await context.Publish(new MapleShipmentAccepted() { OrderId = message.OrderId, TrackingNumber = message.TrackingNumber});
+            await context.Publish(new MapleShipmentAccepted() { OrderId = message.OrderId, TrackingNumber = message.TrackingNumber });
         }
 
         public async Task Handle(MapleApiFailureRejection message, IMessageHandlerContext context)
         {
             log.Info($"ShipWithMapleWorkflow: MapleApiFailureRejection [OrderId: {message.OrderId}, Error:  {message.ResultMessage}]");
 
-            await context.Publish(new MapleShipmentFailed() { OrderId = message.OrderId, ResultMessage = message.ResultMessage});
+            await context.Publish(new MapleShipmentFailed() { OrderId = message.OrderId, ResultMessage = message.ResultMessage });
         }
 
         public async Task Handle(MapleApiFailureRedirect message, IMessageHandlerContext context)

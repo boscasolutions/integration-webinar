@@ -1,11 +1,10 @@
 ﻿namespace Shipping
 {
+    using System.Threading.Tasks;
     using Messages.Commands;
     using Messages.Events;
     using NServiceBus;
     using NServiceBus.Logging;
-    using System;
-    using System.Threading.Tasks;
 
     class ShipOrderWorkflow :
         Saga<ShipOrderWorkflow.ShipOrderData>,
@@ -15,7 +14,7 @@
         IHandleMessages<MapleShipmentFailed>,
         IHandleMessages<AlpineShipmentFailed>
     {
-        static ILog log = LogManager.GetLogger<ShipOrderWorkflow>();
+        static readonly ILog log = LogManager.GetLogger<ShipOrderWorkflow>();
 
         protected override void ConfigureHowToFindSaga(SagaPropertyMapper<ShipOrderData> mapper)
         {

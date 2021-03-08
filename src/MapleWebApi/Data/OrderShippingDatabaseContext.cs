@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MapleWebApi.Models;
+﻿using MapleWebApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace MapleWebApi.Data
 {
@@ -8,9 +8,9 @@ namespace MapleWebApi.Data
         public OrderShippingDatabaseContext(
             DbContextOptions<OrderShippingDatabaseContext> dbContextOptions)
             : base(dbContextOptions) { }
-        
+
         public DbSet<OrderShipping> OrderShippings { get; set; }
-        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<OrderShipping>()

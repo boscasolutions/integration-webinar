@@ -1,6 +1,6 @@
-﻿using Messages.Commands;
+﻿using System;
+using Messages.Commands;
 using NServiceBus;
-using System;
 
 namespace MapleTechnicalComponent
 {
@@ -10,7 +10,7 @@ namespace MapleTechnicalComponent
         {
             return transport =>
             {
-                var routing = transport.Routing();
+                RoutingSettings<LearningTransport> routing = transport.Routing();
                 routing.RouteToEndpoint(typeof(ShipWithMapleIntegration), "MapleTechnicalComponent");
                 routing.RouteToEndpoint(typeof(GetOrderShippingStatuMaple), "MapleTechnicalComponent");
             };

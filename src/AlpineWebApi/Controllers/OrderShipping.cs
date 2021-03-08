@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using AlpineWebApi.Data.Services.Interfaces;
 using AlpineWebApi.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AlpineWebApi.Controllers
 {
@@ -21,7 +21,7 @@ namespace AlpineWebApi.Controllers
         {
             if (Program.responseSet == 200)
             {
-                var result = await _orderShippingService.GetById(orderId).ConfigureAwait(false);
+                OrderShipping result = await _orderShippingService.GetById(orderId).ConfigureAwait(false);
                 return Ok(result);
             }
             else
@@ -35,11 +35,11 @@ namespace AlpineWebApi.Controllers
         {
             if (Program.responseSet == 200)
             {
-                var tracking = Guid.NewGuid().ToString();
+                string tracking = Guid.NewGuid().ToString();
                 model.TrackingNumber = tracking;
-                
-                var result = await _orderShippingService.Create(model).ConfigureAwait(false);
-                
+
+                OrderShipping result = await _orderShippingService.Create(model).ConfigureAwait(false);
+
                 return CreatedAtAction(
                     nameof(GetByOrderById),
                     new { id = result.OrderId }, result);

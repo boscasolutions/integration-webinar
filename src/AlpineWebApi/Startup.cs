@@ -1,15 +1,15 @@
+using AlpineWebApi.Data;
+using AlpineWebApi.Data.Repositories;
+using AlpineWebApi.Data.Repositories.Repositories.Interfaces;
+using AlpineWebApi.Data.Services;
+using AlpineWebApi.Data.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Configuration;
-using AlpineWebApi.Data.Services;
-using AlpineWebApi.Data.Services.Interfaces;
-using AlpineWebApi.Data.Repositories.Repositories.Interfaces;
-using AlpineWebApi.Data.Repositories;
-using AlpineWebApi.Data;
-using Microsoft.EntityFrameworkCore;
 
 namespace AlpineWebApi
 {
@@ -59,7 +59,7 @@ namespace AlpineWebApi
 
         private static void ConfigureEntityFramework(IServiceCollection services)
         {
-            var databaseName = "OrderShippingDb";
+            string databaseName = "OrderShippingDb";
 
             services.AddDbContext<OrderShippingDatabaseContext>(options =>
                 options.UseInMemoryDatabase(databaseName));

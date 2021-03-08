@@ -1,14 +1,14 @@
-﻿using Messages.Events;
+﻿using System.Threading.Tasks;
 using Messages.Commands;
+using Messages.Events;
 using NServiceBus;
 using NServiceBus.Logging;
-using System.Threading.Tasks;
 
 namespace Shipping
 {
-    class OrderPlacedHandler :IHandleMessages<OrderPlaced>
+    class OrderPlacedHandler : IHandleMessages<OrderPlaced>
     {
-        static ILog log = LogManager.GetLogger<OrderPlacedHandler>();
+        static readonly ILog log = LogManager.GetLogger<OrderPlacedHandler>();
 
         public async Task Handle(OrderPlaced message, IMessageHandlerContext context)
         {

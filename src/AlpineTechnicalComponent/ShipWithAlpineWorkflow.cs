@@ -1,22 +1,21 @@
-﻿using Messages.Commands;
+﻿using System.Threading.Tasks;
+using Messages.Commands;
 using Messages.Events;
 using Messages.Replys;
 using NServiceBus;
 using NServiceBus.Logging;
-using System.Threading.Tasks;
 
 namespace AlpineTechnicalComponent
 {
-    #region ShipWithAlpineWorkflow
     // Alpine is the expansive but reliable and idempotent service 
-    class ShipWithAlpineWorkflow : Saga<ShipWithAlpineWorkflowData>, 
+    class ShipWithAlpineWorkflow : Saga<ShipWithAlpineWorkflowData>,
         IAmStartedByMessages<ShipWithAlpine>,
         IHandleMessages<AlpineApiSucsess>,
         IHandleMessages<AlpineApiFailureUnknown>,
         IHandleMessages<AlpineApiFailureRejection>,
         IHandleMessages<AlpineApiFailureRedirect>
     {
-        static ILog log = LogManager.GetLogger<ShipWithAlpineWorkflow>();
+        static readonly ILog log = LogManager.GetLogger<ShipWithAlpineWorkflow>();
 
         protected override void ConfigureHowToFindSaga(SagaPropertyMapper<ShipWithAlpineWorkflowData> mapper)
         {
@@ -38,7 +37,7 @@ namespace AlpineTechnicalComponent
         {
             log.Info($"ShipWithAlpineWorkflow: AlpineApiSucsess [OrderId: {message.OrderId}, Tracking: {message.TrackingNumber}]");
 
-            await context.Publish(new AlpineShipmentAccepted() { OrderId = message.OrderId, TrackingNumber = message.TrackingNumber});
+            await context.Publish(new AlpineShipmentAccepted() { OrderId = message.OrderId, TrackingNumber = message.TrackingNumber });
         }
 
         public async Task Handle(AlpineApiFailureUnknown message, IMessageHandlerContext context)
@@ -68,5 +67,4 @@ namespace AlpineTechnicalComponent
     {
         public string OrderId { get; internal set; }
     }
-    #endregion
 }
