@@ -65,6 +65,6 @@ namespace AlpineTechnicalComponent
 
     internal class ShipWithAlpineWorkflowData : ContainSagaData
     {
-        public string OrderId { get; internal set; }
+        public string OrderId { get; set; }
     }
 }

@@ -16,18 +16,16 @@ namespace MapleWebApi.Controllers
             _orderShippingService = orderShippingService;
         }
 
-        [HttpPost("{orderId}", Name = "GetByOrderById")]
-        public async Task<ActionResult> GetByOrderById(string orderId)
+        [HttpPost]
+        [Route("GetByOrderById")]
+        public async Task<ActionResult> GetByOrderById([FromBody] OrderShipping model)
         {
-            if (Program.responseSet == 200)
-            {
-                OrderShipping result = await _orderShippingService.GetById(orderId).ConfigureAwait(false);
-                return Ok(result);
-            }
-            else
-            {
-                return new StatusCodeResult(Program.responseSet);
-            }
+            OrderShipping result = await _orderShippingService.GetById(model.OrderId).ConfigureAwait(false);
+
+            if (result.State == "Not Found" || string.IsNullOrEmpty(result.OrderId))
+                return NotFound();
+
+            return Ok(result);
         }
 
         [HttpPost]
@@ -40,9 +38,17 @@ namespace MapleWebApi.Controllers
 
                 OrderShipping result = await _orderShippingService.Create(model).ConfigureAwait(false);
 
-                return CreatedAtAction(
-                    nameof(GetByOrderById),
-                    new { id = result.OrderId }, result);
+                return Ok(result);
+            }
+
+            if (Program.responseSet == 500)
+            {
+                string tracking = Guid.NewGuid().ToString();
+                model.TrackingNumber = tracking;
+
+                OrderShipping result = await _orderShippingService.Create(model).ConfigureAwait(false);
+
+                return Problem();
             }
             else
             {

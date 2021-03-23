@@ -7,7 +7,6 @@ using NServiceBus.Logging;
 
 namespace MapleTechnicalComponent
 {
-    #region ShipWithMapleWorkflow
     // Maple is the inexpensive but less reliable and not idempotent service 
     // That means we need to watch put for:
     // Retries: we need to make sure we don't ship the order twice, if there is a failure 
@@ -44,15 +43,21 @@ namespace MapleTechnicalComponent
             log.Info($"ShipWithMapleWorkflow: MapleApiFailureUnknown [OrderId: {message.OrderId}, Error:  {message.ResultMessage}]");
 
             // TODO: retry
-            if (Data.RetryCount < 3)
+            if (Data.RetryCount < 2)
             {
-                Data.RetryCount++;
+                Data.RetryCount ++;
                 // check if order was excepted
-                await context.Send(new GetOrderShippingStatuMaple() { OrderId = message.OrderId });
+                await context.Send(new GetOrderShippingStatuMaple() 
+                { OrderId = message.OrderId 
+                }).ConfigureAwait(false);
             }
             else
             {
-                await context.Publish(new MapleShipmentFailed() { OrderId = message.OrderId, ResultMessage = message.ResultMessage });
+                await context.Publish(new MapleShipmentFailed() 
+                { 
+                    OrderId = message.OrderId, 
+                    ResultMessage = message.ResultMessage 
+                }).ConfigureAwait(false);
             }
         }
 
@@ -80,9 +85,7 @@ namespace MapleTechnicalComponent
 
     internal class ShipWithMapleWorkflowData : ContainSagaData
     {
-        public string OrderId { get; internal set; }
-        public int RetryCount { get; internal set; }
+        public string OrderId { get; set; }
+        public int RetryCount { get; set; }
     }
-
-    #endregion
 }

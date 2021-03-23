@@ -4,6 +4,7 @@ using Messages.Commands;
 using Messages.Replys;
 using NServiceBus;
 using NServiceBus.Logging;
+using Shipping.Integration.Contracts;
 
 namespace MapleTechnicalComponent
 {
@@ -18,18 +19,27 @@ namespace MapleTechnicalComponent
 
             MapleApiClient apiClient = new MapleApiClient();
 
-            OrderShippingResult result = await apiClient.GetOrderShippingStatus(message.OrderId).ConfigureAwait(false);
+            OrderShipping orderShipping = new OrderShipping() { OrderId = message.OrderId, State = "Posted" };
+            OrderShippingResult result = await apiClient.GetOrderShippingStatus(orderShipping).ConfigureAwait(false);
 
             // TODO: expand on that
-            if (result.Sucsess && !string.IsNullOrEmpty(result.OrderShipping.TrackingNumber))
+            if (result.Sucsess && result.OrderShipping != null)
             {
-                await context.Reply(new MapleApiSucsess() { OrderId = message.OrderId, ResultMessage = result.SuccessMessage, TrackingNumber = result.OrderShipping.TrackingNumber });
+                await context.Reply(new MapleApiSucsess()
+                { 
+                    OrderId = message.OrderId, 
+                    ResultMessage = result.Message, 
+                    TrackingNumber = result.OrderShipping.TrackingNumber
+                });
             }
             else
             {
-                await context.Reply(new MapleApiFailureUnknown() { OrderId = message.OrderId, ResultMessage = result.ErrorMessage });
+                await context.Reply(new MapleApiFailureUnknown() 
+                { 
+                    OrderId = message.OrderId, 
+                    ResultMessage = result.Message
+                });
             }
-
         }
     }
 }

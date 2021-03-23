@@ -14,6 +14,13 @@ namespace MapleTechnicalComponent
             EndpointConfiguration endpointConfiguration = new EndpointConfiguration("MapleTechnicalComponent");
             endpointConfiguration.ApplyEndpointConfiguration(EndpointMappings.MessageEndpointMappings());
 
+            var recoverability = endpointConfiguration.Recoverability();
+            recoverability.Immediate(
+                immediate =>
+                {
+                    immediate.NumberOfRetries(0);
+                });
+
             IEndpointInstance endpointInstance = await Endpoint.Start(endpointConfiguration)
                 .ConfigureAwait(false);
 

@@ -7,12 +7,13 @@ namespace MapleWebApi
     class Program
     {
         internal static int responseSet = 200;
+        internal static string Url = "http://localhost:57811/";
 
         static void Main(string[] args)
         {
             WebHost.CreateDefaultBuilder()
                 .UseStartup<Startup>()
-                .UseUrls("http://localhost:57811/")
+                .UseUrls(Url)
                 .Build()
                 .Start();
 
@@ -47,6 +48,7 @@ namespace MapleWebApi
 
         static void ReportStatus()
         {
+            Console.WriteLine("\r\nservice URL: {0}", Url);
             Console.WriteLine("\r\nCurrently returning {0}", responseSet.ToString());
         }
     }

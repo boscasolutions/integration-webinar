@@ -15,7 +15,7 @@ namespace Shipping.Integration.Contracts
 
         public DateTime CreatedAt { get; set; }
 
-        public DateTime LastUpdatedDateTimeUtc { get; internal set; }
+        public DateTime LastUpdatedDateTimeUtc { get; set; }
 
         public string State { get; set; }
 

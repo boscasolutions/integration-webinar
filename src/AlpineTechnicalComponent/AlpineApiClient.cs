@@ -1,27 +1,89 @@
 ﻿using System.Threading.Tasks;
 using Common.Shipping.Integration;
 using Shipping.Integration.Contracts;
+using System.Net.Http.Json;
+using NServiceBus.Logging;
+using System;
+using System.Net.Http;
 
 namespace AlpineTechnicalComponent
 {
     public class AlpineApiClient
     {
         const string url = "http://localhost:57810";
+        static readonly HttpClient httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(15) };
+        static readonly ILog log = LogManager.GetLogger<AlpineApiClient>();
 
-        public async Task<OrderShippingResult> PlaceShippingForOrder(string orderId)
+        public async Task<OrderShippingResult> PlaceShippingForOrder(OrderShipping orderShipping)
         {
-            OrderShipping orderShipping = new OrderShipping() { OrderId = orderId, State = "Posted" };
+            OrderShippingResult apiResult = new OrderShippingResult();
+            string statusCode = string.Empty;
 
-            OrderShippingResult result = await new ApiClient(url).PostShipOrder(orderShipping).ConfigureAwait(false);
+            try
+            {
+                using (HttpResponseMessage response = await httpClient
+                    .PostAsJsonAsync(url + "/OrderShipping/", orderShipping)
+                    .ConfigureAwait(false))
+                {
+                    statusCode = response.StatusCode.ToString();
 
-            return result;
+                    response.EnsureSuccessStatusCode();
+
+                    apiResult.OrderShipping = await response.Content
+                        .ReadFromJsonAsync<OrderShipping>()
+                        .ConfigureAwait(false);
+                }
+
+                string info = $"Api: '{url}'/OrderShipping/'{orderShipping.OrderId}'. HttpStatusCode: {statusCode}";
+
+                log.Info(info);
+
+                apiResult.RequestPassed(info);
+
+                return apiResult;
+            }
+            catch (Exception exception)
+            {
+                string error = $"Failed to contact '{url}'. Error: {exception.Message}";
+                log.Info(error);
+                apiResult.RequestFailed(error, statusCode);
+                return apiResult;
+            }
         }
 
-        internal async Task<OrderShippingResult> GetOrderShippingStatus(string orderId)
+        public async Task<OrderShippingResult> GetOrderShippingStatus(OrderShipping orderShipping)
         {
-            OrderShippingResult result = await new ApiClient(url).GetShipOrder(orderId).ConfigureAwait(false);
+            OrderShippingResult apiResult = new OrderShippingResult();
+            string statusCode = string.Empty;
 
-            return result;
+            try
+            {
+                using (HttpResponseMessage response = await httpClient
+                    .PostAsJsonAsync(url + "/OrderShipping/GetByOrderById/", orderShipping)
+                    .ConfigureAwait(false))
+                {
+                    response.EnsureSuccessStatusCode();
+
+                    apiResult.OrderShipping = await response.Content
+                        .ReadFromJsonAsync<OrderShipping>()
+                        .ConfigureAwait(false);
+                }
+
+                string info = $"Api: '{url}'/OrderShipping/GetByOrderById/'{orderShipping.OrderId}'. HttpStatusCode: {statusCode}";
+
+                log.Info(info);
+
+                apiResult.RequestPassed(info);
+
+                return apiResult;
+            }
+            catch (Exception exception)
+            {
+                string error = $"Failed to contact '{url}'. Error: {exception.Message}";
+                log.Info(error);
+                apiResult.RequestFailed(error, statusCode);
+                return apiResult;
+            }
         }
     }
 }

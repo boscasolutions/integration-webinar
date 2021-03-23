@@ -4,6 +4,7 @@ using Messages.Commands;
 using Messages.Replys;
 using NServiceBus;
 using NServiceBus.Logging;
+using Shipping.Integration.Contracts;
 
 namespace MapleTechnicalComponent
 {
@@ -17,31 +18,46 @@ namespace MapleTechnicalComponent
             log.Info($"ShipWithMapleIntegrationHandler: Order [{message.OrderId}].");
 
             MapleApiClient apiClient = new MapleApiClient();
-
-            OrderShippingResult result = await apiClient.PlaceShippingForOrder(message.OrderId).ConfigureAwait(false);
+            OrderShipping orderShipping = new OrderShipping() { OrderId = message.OrderId, State = "Posted" };
+            OrderShippingResult result = await apiClient
+                .PlaceShippingForOrder(orderShipping)
+                .ConfigureAwait(false);
 
             // TODO: expand on that
             if (result.Sucsess)
             {
-                await context.Reply(new MapleApiSucsess() { OrderId = message.OrderId, ResultMessage = result.SuccessMessage, TrackingNumber = result.OrderShipping.TrackingNumber });
+                await context.Reply(new MapleApiSucsess() { 
+                    OrderId = message.OrderId, 
+                    ResultMessage = result.Message, 
+                    TrackingNumber = result.OrderShipping.TrackingNumber 
+                });
             }
 
             if (result.Failed)
             {
-                await context.Reply(new MapleApiFailureUnknown() { OrderId = message.OrderId, ResultMessage = result.ErrorMessage });
+                await context.Reply(new MapleApiFailureUnknown() { 
+                    OrderId = message.OrderId, 
+                    ResultMessage = result.Message
+                });
             }
 
             if (result.Rejected)
             {
-                await context.Reply(new MapleApiFailureRejection() { OrderId = message.OrderId, ResultMessage = result.ErrorMessage });
+                await context.Reply(new MapleApiFailureRejection() {
+                    OrderId = message.OrderId, 
+                    ResultMessage = result.Message
+                });
             }
 
             if (result.Redirect)
             {
-                await context.Reply(new MapleApiFailureRedirect() { OrderId = message.OrderId, ResultMessage = result.ErrorMessage });
+                await context.Reply(new MapleApiFailureRedirect() { 
+                    OrderId = message.OrderId, 
+                    ResultMessage = result.Message
+                });
             }
 
-            log.Info($"ShipWithMapleIntegrationHandler: PlaceShippingForOrder, OrderId: [{message.OrderId}], Result: [{result.StatusCode}, {result.ErrorMessage}]");
+            log.Info($"ShipWithMapleIntegrationHandler: PlaceShippingForOrder, OrderId: [{message.OrderId}], Result: [{result.StatusCode}, {result.Message}]");
         }
     }
 }

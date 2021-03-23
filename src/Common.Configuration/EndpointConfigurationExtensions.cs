@@ -15,6 +15,7 @@ namespace Common.Configuration
 
             TransportExtensions<LearningTransport> transport = endpointConfiguration.UseTransport<LearningTransport>();
             PersistenceExtensions<LearningPersistence> persistence = endpointConfiguration.UsePersistence<LearningPersistence>();
+            persistence.SagaStorageDirectory(@"..\..\..\..\.sagas\");
 
             endpointConfiguration.AuditProcessedMessagesTo("audit");
             endpointConfiguration.SendFailedMessagesTo("error");
