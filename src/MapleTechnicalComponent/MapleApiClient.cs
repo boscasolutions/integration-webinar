@@ -1,10 +1,10 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Common.Shipping.Integration;
-using Shipping.Integration.Contracts;
-using System.Net.Http.Json;
 using NServiceBus.Logging;
-using System;
+using Shipping.Integration.Contracts;
 
 namespace MapleTechnicalComponent
 {

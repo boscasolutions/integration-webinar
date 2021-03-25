@@ -26,33 +26,37 @@ namespace MapleTechnicalComponent
             // TODO: expand on that
             if (result.Sucsess)
             {
-                await context.Reply(new MapleApiSucsess() { 
-                    OrderId = message.OrderId, 
-                    ResultMessage = result.Message, 
-                    TrackingNumber = result.OrderShipping.TrackingNumber 
+                await context.Reply(new MapleApiSucsess()
+                {
+                    OrderId = message.OrderId,
+                    ResultMessage = result.Message,
+                    TrackingNumber = result.OrderShipping.TrackingNumber
                 });
             }
 
             if (result.Failed)
             {
-                await context.Reply(new MapleApiFailureUnknown() { 
-                    OrderId = message.OrderId, 
+                await context.Reply(new MapleApiFailureUnknown()
+                {
+                    OrderId = message.OrderId,
                     ResultMessage = result.Message
                 });
             }
 
             if (result.Rejected)
             {
-                await context.Reply(new MapleApiFailureRejection() {
-                    OrderId = message.OrderId, 
+                await context.Reply(new MapleApiFailureRejection()
+                {
+                    OrderId = message.OrderId,
                     ResultMessage = result.Message
                 });
             }
 
             if (result.Redirect)
             {
-                await context.Reply(new MapleApiFailureRedirect() { 
-                    OrderId = message.OrderId, 
+                await context.Reply(new MapleApiFailureRedirect()
+                {
+                    OrderId = message.OrderId,
                     ResultMessage = result.Message
                 });
             }

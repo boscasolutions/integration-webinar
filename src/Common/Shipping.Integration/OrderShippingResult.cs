@@ -1,5 +1,4 @@
-﻿using System;
-using Shipping.Integration.Contracts;
+﻿using Shipping.Integration.Contracts;
 
 namespace Common.Shipping.Integration
 {

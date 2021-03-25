@@ -45,18 +45,19 @@ namespace MapleTechnicalComponent
             // TODO: retry
             if (Data.RetryCount < 2)
             {
-                Data.RetryCount ++;
+                Data.RetryCount++;
                 // check if order was excepted
-                await context.Send(new GetOrderShippingStatuMaple() 
-                { OrderId = message.OrderId 
+                await context.Send(new GetOrderShippingStatuMaple()
+                {
+                    OrderId = message.OrderId
                 }).ConfigureAwait(false);
             }
             else
             {
-                await context.Publish(new MapleShipmentFailed() 
-                { 
-                    OrderId = message.OrderId, 
-                    ResultMessage = message.ResultMessage 
+                await context.Publish(new MapleShipmentFailed()
+                {
+                    OrderId = message.OrderId,
+                    ResultMessage = message.ResultMessage
                 }).ConfigureAwait(false);
             }
         }

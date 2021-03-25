@@ -26,17 +26,17 @@ namespace MapleTechnicalComponent
             if (result.Sucsess && result.OrderShipping != null)
             {
                 await context.Reply(new MapleApiSucsess()
-                { 
-                    OrderId = message.OrderId, 
-                    ResultMessage = result.Message, 
+                {
+                    OrderId = message.OrderId,
+                    ResultMessage = result.Message,
                     TrackingNumber = result.OrderShipping.TrackingNumber
                 });
             }
             else
             {
-                await context.Reply(new MapleApiFailureUnknown() 
-                { 
-                    OrderId = message.OrderId, 
+                await context.Reply(new MapleApiFailureUnknown()
+                {
+                    OrderId = message.OrderId,
                     ResultMessage = result.Message
                 });
             }

@@ -35,7 +35,7 @@ namespace AlpineWebApi.Controllers
             {
                 // Try to check if the item exist (idempotent)
                 OrderShipping result = await _orderShippingService.GetById(model.OrderId).ConfigureAwait(false);
-                if(result.OrderId == model.OrderId)
+                if (result.OrderId == model.OrderId)
                     return Ok(result);
 
                 model.TrackingNumber = Guid.NewGuid().ToString();
