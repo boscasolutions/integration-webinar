@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net.Http;
+using System.Threading.Tasks;
 using Common.Shipping.Integration;
 using Shipping.Integration.Contracts;
 using System.Net.Http.Json;
 using NServiceBus.Logging;
 using System;
-using System.Net.Http;
 
 namespace AlpineTechnicalComponent
 {

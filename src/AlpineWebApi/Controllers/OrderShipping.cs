@@ -33,20 +33,25 @@ namespace AlpineWebApi.Controllers
         {
             if (Program.responseSet == 200)
             {
-                string tracking = Guid.NewGuid().ToString();
-                model.TrackingNumber = tracking;
+                // Try to check if the item exist (idempotent)
+                OrderShipping result = await _orderShippingService.GetById(model.OrderId).ConfigureAwait(false);
+                if(result.OrderId == model.OrderId)
+                    return Ok(result);
 
-                OrderShipping result = await _orderShippingService.Create(model).ConfigureAwait(false);
+                model.TrackingNumber = Guid.NewGuid().ToString();
+
+                result = await _orderShippingService.Create(model)
+                    .ConfigureAwait(false);
 
                 return Ok(result);
             }
 
             if (Program.responseSet == 500)
             {
-                string tracking = Guid.NewGuid().ToString();
-                model.TrackingNumber = tracking;
+                model.TrackingNumber = Guid.NewGuid().ToString();
 
-                OrderShipping result = await _orderShippingService.Create(model).ConfigureAwait(false);
+                await _orderShippingService.Create(model)
+                    .ConfigureAwait(false);
 
                 return Problem();
             }
