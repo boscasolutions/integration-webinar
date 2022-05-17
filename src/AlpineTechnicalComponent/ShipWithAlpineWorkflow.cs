@@ -19,11 +19,12 @@ namespace AlpineTechnicalComponent
 
         protected override void ConfigureHowToFindSaga(SagaPropertyMapper<ShipWithAlpineWorkflowData> mapper)
         {
-            mapper.ConfigureMapping<ShipWithAlpine>(message => message.OrderId).ToSaga(saga => saga.OrderId);
-            mapper.ConfigureMapping<AlpineApiSucsess>(message => message.OrderId).ToSaga(saga => saga.OrderId);
-            mapper.ConfigureMapping<AlpineApiFailureUnknown>(message => message.OrderId).ToSaga(saga => saga.OrderId);
-            mapper.ConfigureMapping<AlpineApiFailureRejection>(message => message.OrderId).ToSaga(saga => saga.OrderId);
-            mapper.ConfigureMapping<AlpineApiFailureRedirect>(message => message.OrderId).ToSaga(saga => saga.OrderId);
+            mapper.MapSaga(saga => saga.OrderId)
+                .ToMessage<ShipWithAlpine>(message => message.OrderId)
+                .ToMessage<AlpineApiSucsess>(message => message.OrderId)
+                .ToMessage<AlpineApiFailureUnknown>(message => message.OrderId)
+                .ToMessage<AlpineApiFailureRejection>(message => message.OrderId)
+                .ToMessage<AlpineApiFailureRedirect>(message => message.OrderId);
         }
 
         public async Task Handle(ShipWithAlpine message, IMessageHandlerContext context)

@@ -5,7 +5,6 @@ using AlpineWebApi.Data.Services;
 using AlpineWebApi.Data.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,13 +37,14 @@ namespace AlpineWebApi
             });
 
             ConfigureTransientServices(services);
+
             ConfigureRepositories(services);
+
             ConfigureEntityFramework(services);
 
-            services
-                .AddSwaggerGen()// Register the Swagger generator, defining 1 or more Swagger documents
-                .AddMvc(options => options.EnableEndpointRouting = false)
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddControllers();
+
+            services.AddSwaggerGen();
         }
 
         private static void ConfigureTransientServices(IServiceCollection services)
@@ -88,11 +88,11 @@ namespace AlpineWebApi
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
 
-            app.UseMvc(routes =>
+            app.UseRouting();
+
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{orderId?}");
+                endpoints.MapControllers();
             });
         }
     }

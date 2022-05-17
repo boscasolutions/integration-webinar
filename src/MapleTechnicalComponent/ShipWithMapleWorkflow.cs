@@ -23,12 +23,12 @@ namespace MapleTechnicalComponent
 
         protected override void ConfigureHowToFindSaga(SagaPropertyMapper<ShipWithMapleWorkflowData> mapper)
         {
-            mapper.ConfigureMapping<ShipWithMaple>(message => message.OrderId).ToSaga(saga => saga.OrderId);
-            mapper.ConfigureMapping<MapleApiSucsess>(message => message.OrderId).ToSaga(saga => saga.OrderId);
-            mapper.ConfigureMapping<MapleApiFailureUnknown>(message => message.OrderId).ToSaga(saga => saga.OrderId);
-            mapper.ConfigureMapping<MapleApiFailureRejection>(message => message.OrderId).ToSaga(saga => saga.OrderId);
-            mapper.ConfigureMapping<MapleApiFailureRedirect>(message => message.OrderId).ToSaga(saga => saga.OrderId);
-
+            mapper.MapSaga(saga => saga.OrderId)
+                .ToMessage<ShipWithMaple>(message => message.OrderId)
+                .ToMessage<MapleApiSucsess>(message => message.OrderId)
+                .ToMessage<MapleApiFailureUnknown>(message => message.OrderId)
+                .ToMessage<MapleApiFailureRejection>(message => message.OrderId)
+                .ToMessage<MapleApiFailureRedirect>(message => message.OrderId);
         }
 
         public async Task Handle(ShipWithMaple message, IMessageHandlerContext context)

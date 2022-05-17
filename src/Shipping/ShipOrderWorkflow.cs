@@ -18,11 +18,12 @@
 
         protected override void ConfigureHowToFindSaga(SagaPropertyMapper<ShipOrderData> mapper)
         {
-            mapper.ConfigureMapping<ShipOrder>(message => message.OrderId).ToSaga(saga => saga.OrderId);
-            mapper.ConfigureMapping<MapleShipmentAccepted>(message => message.OrderId).ToSaga(saga => saga.OrderId);
-            mapper.ConfigureMapping<AlpineShipmentAccepted>(message => message.OrderId).ToSaga(saga => saga.OrderId);
-            mapper.ConfigureMapping<MapleShipmentFailed>(message => message.OrderId).ToSaga(saga => saga.OrderId);
-            mapper.ConfigureMapping<AlpineShipmentFailed>(message => message.OrderId).ToSaga(saga => saga.OrderId);
+            mapper.MapSaga(saga => saga.OrderId)
+                .ToMessage<ShipOrder>(message => message.OrderId)
+                .ToMessage<MapleShipmentAccepted>(message => message.OrderId)
+                .ToMessage<AlpineShipmentAccepted>(message => message.OrderId)
+                .ToMessage<MapleShipmentFailed>(message => message.OrderId)
+                .ToMessage<AlpineShipmentFailed>(message => message.OrderId);
         }
 
         public async Task Handle(ShipOrder message, IMessageHandlerContext context)

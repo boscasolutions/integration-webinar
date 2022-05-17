@@ -38,13 +38,14 @@ namespace MapleWebApi
             });
 
             ConfigureTransientServices(services);
+            
             ConfigureRepositories(services);
+            
             ConfigureEntityFramework(services);
+            
+            services.AddControllers();
 
-            services
-                .AddSwaggerGen()// Register the Swagger generator, defining 1 or more Swagger documents
-                .AddMvc(options => options.EnableEndpointRouting = false)
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddSwaggerGen();
         }
 
         private static void ConfigureTransientServices(IServiceCollection services)
@@ -88,11 +89,11 @@ namespace MapleWebApi
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
 
-            app.UseMvc(routes =>
+            app.UseRouting();
+
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{orderId?}");
+                endpoints.MapControllers();
             });
         }
     }
